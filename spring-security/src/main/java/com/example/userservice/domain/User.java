@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.EAGER;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name= "users")
+@Table(name = "users")
 public class User {  // Lookout for spring-security user nameclash
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
