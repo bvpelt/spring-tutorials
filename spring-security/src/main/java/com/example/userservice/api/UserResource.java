@@ -5,6 +5,7 @@ import com.example.userservice.domain.User;
 import com.example.userservice.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Slf4j
 public class UserResource {
     private final UserService userService;
 
@@ -40,6 +42,13 @@ public class UserResource {
         userService.addRoleToUser(form.getUsername(), form.getRolename());
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> getToken() {
+        log.info("Login");
+        return ResponseEntity.ok().build();
+    }
+
 }
 
 @Data

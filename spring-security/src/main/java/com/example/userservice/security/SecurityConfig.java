@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -35,18 +36,28 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        AbstractAuthenticationProcessingFilter filter = new CustomAuthenticationFilter(authenticationManager());
-        filter.setFilterProcessesUrl("/api");
+        AbstractAuthenticationProcessingFilter filter = new CustomAuthenticationFilter(authenticationManager(configuration));
+        filter.setFilterProcessesUrl("/api/login");
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/login").permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
+        http.addFilter(filter);
 
         return http.build();
     }
 
+    /*
     @Bean
     AuthenticationManager authenticationManager() throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+     */
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
