@@ -3,19 +3,20 @@ package com.example.userservice;
 import com.example.userservice.domain.Role;
 import com.example.userservice.domain.User;
 import com.example.userservice.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 
 @SpringBootApplication
-
+@Slf4j
 public class UserserviceApplication {
+
 
     public static void main(String[] args) {
         SpringApplication.run(UserserviceApplication.class, args);
@@ -47,12 +48,8 @@ public class UserserviceApplication {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Bean
-    ProviderManager providerManager() {
-        return new ProviderManager();
+        return new BCryptPasswordEncoder();
     }
 
 }
