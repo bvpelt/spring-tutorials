@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -32,7 +31,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getServletPath().equals("/api/login")) {
+        if (request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
             log.info("No action for path /api/login");
             filterChain.doFilter(request, response);
         } else {
@@ -58,7 +57,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     log.error("Error during authorization check: {}", exception.getMessage());
                     response.setHeader("error", exception.getMessage());
                     response.setStatus(FORBIDDEN.value());
-                    //response.sendError(FORBIDDEN.value());
 
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", exception.getMessage());
