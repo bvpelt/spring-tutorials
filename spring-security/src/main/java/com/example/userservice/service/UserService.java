@@ -16,5 +16,9 @@ public interface UserService {
 
     List<User> getUsers();  // inefficient with many users -- improvement user paging
 
+
+    List<Role> getRoles();
+    Role getRole(String rolename);
+
     User getUserById(Long id);
 }

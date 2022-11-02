@@ -36,6 +36,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             log.info("Checking authorization for: {}", request.getServletPath());
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                log.info("authorization header available: {}", authorizationHeader);
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
 
