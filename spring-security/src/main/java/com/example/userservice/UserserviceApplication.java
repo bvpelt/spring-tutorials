@@ -34,6 +34,7 @@ public class UserserviceApplication {
             userService.saveUser(new User(null, "Will Smith", "will", "1234", new ArrayList<>()));
             userService.saveUser(new User(null, "Jim Carry", "jim", "1234", new ArrayList<>()));
             userService.saveUser(new User(null, "Arnold Schwarzenegger", "arnold", "1234", new ArrayList<>()));
+            userService.saveUser(new User(null, "Brad Pitt", "brad", "1234", new ArrayList<>()));
 
             userService.addRoleToUser("john", "ROLE_USER");
             userService.addRoleToUser("john", "ROLE_MANAGER");
@@ -48,7 +49,6 @@ public class UserserviceApplication {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 

@@ -36,6 +36,16 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    @GetMapping("/users/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(user);
+        }
+    }
+
     @PostMapping("/user/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());

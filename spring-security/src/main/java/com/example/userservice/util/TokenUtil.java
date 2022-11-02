@@ -12,45 +12,77 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 
 @Slf4j
 public class TokenUtil {
+    private final int ACCESS_TOKEN_LIFETIME_MINS = 10;
+    private final int REFRESH_TOKEN_LIFETIME_MINS = 30;
+
+    private final String dateFormat = "YYYY-MM-dd hh:mm:ss";
 
     private Algorithm generateAlgorithm() {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
         return algorithm;
+    }
 
+    private int getTokenLifetime_in_milliseconds(int minutes) {
+        return minutes * 60 * 1000; // mins * seconds per min * milliseconds
+    }
+
+    private int getAccessTokenLifetime_in_milliseconds() {
+        return getTokenLifetime_in_milliseconds(ACCESS_TOKEN_LIFETIME_MINS);
+    }
+
+    private int getRefreshTokenLifetime_in_milliseconds() {
+        return getTokenLifetime_in_milliseconds(REFRESH_TOKEN_LIFETIME_MINS);
+    }
+
+    private String getAccessToken(String username, String issuer, Algorithm algorithm, List<?> roles) {
+        Date expiretime = new Date(System.currentTimeMillis() + getAccessTokenLifetime_in_milliseconds());
+        DateFormat df = new SimpleDateFormat(dateFormat);
+
+        String accessToken = JWT.create()
+                .withSubject(username)
+                .withExpiresAt(expiretime)
+                .withIssuer(issuer)
+                .withClaim("roles", roles)
+                .sign(algorithm);
+
+        log.info("Generated accesstoken expires at {}, accesstoken: {}", df.format(expiretime), accessToken);
+
+        return accessToken;
     }
 
     public String generateAccesToken(User user, String issuer) {
 
         Algorithm algorithm = generateAlgorithm();
 
-        String access_token = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                .withIssuer(issuer)
-                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-                .sign(algorithm);
+        String access_token = getAccessToken(user.getUsername(), issuer, algorithm, user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
         return access_token;
     }
 
     public String generateRefreshToken(User user, String issuer) {
         Algorithm algorithm = generateAlgorithm();
-
+        Date expiretime = new Date(System.currentTimeMillis() + getRefreshTokenLifetime_in_milliseconds());
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                .withExpiresAt(expiretime)
                 .withIssuer(issuer)
                 .sign(algorithm);
+
+        DateFormat df = new SimpleDateFormat(dateFormat);
+        log.info("Generated refreshtoken expires at {}, accesstoken: {}", df.format(expiretime), refresh_token);
 
         return refresh_token;
     }
@@ -62,12 +94,8 @@ public class TokenUtil {
         DecodedJWT decodedJWT = verifier.verify(refresh_token);
         String username = decodedJWT.getSubject();
         com.example.userservice.domain.User user = userService.getUser(username);
-        String access_token = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                .withIssuer(issuer)
-                .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
-                .sign(algorithm);
+
+        String access_token = getAccessToken(user.getUsername(), issuer, algorithm, user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
 
         return access_token;
     }

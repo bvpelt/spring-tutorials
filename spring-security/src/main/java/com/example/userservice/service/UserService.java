@@ -15,4 +15,6 @@ public interface UserService {
     User getUser(String username);
 
     List<User> getUsers();  // inefficient with many users -- improvement user paging
+
+    User getUserById(Long id);
 }

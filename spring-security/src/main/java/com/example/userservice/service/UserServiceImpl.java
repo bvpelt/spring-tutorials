@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +60,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getUsers() {
         log.info("Fetching all users");
         return userRepo.findAll();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        Optional<User> user = userRepo.findById(id);
+
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            return null;
+        }
     }
 
     @Override
