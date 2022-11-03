@@ -47,10 +47,21 @@ public class UserResource {
         }
     }
 
+    @DeleteMapping("/users/{id}")
+    public void deleteUserById(@PathVariable("id") Long id) {
+        userService.deleteUserById(id);
+    }
+
     @PostMapping("/users")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody(required = true) User user) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users").toUriString());
+        return ResponseEntity.created(uri).body(userService.updateUser(id, user));
     }
 
     @GetMapping("/roles")

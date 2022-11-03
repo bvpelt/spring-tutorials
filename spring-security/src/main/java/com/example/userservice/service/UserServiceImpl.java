@@ -35,6 +35,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepo.save(user);
     }
 
+    public User updateUser(Long id, User user) {
+        User savedUser = userRepo.findById(id)
+                .orElseThrow(() -> new IllegalStateException("user with id " + id + " does not exist"));
+
+        if ((user.getId() != null) && (user.getId() != id)) {
+            throw new IllegalStateException("id of a user may not be changed");
+        }
+        savedUser.setPassword(user.getPassword());
+        savedUser.setName(user.getName());
+        savedUser.setUsername(user.getUsername());
+        savedUser.setRoles(user.getRoles());
+        return userRepo.save(savedUser);
+    }
+
     @Override
     public Role saveRole(Role role) {
         log.info("Saving new role {} to the database", role.getName());
@@ -81,6 +95,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        userRepo.deleteById(id);
     }
 
     @Override
