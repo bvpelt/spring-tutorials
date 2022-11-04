@@ -35,7 +35,7 @@ public class TokenUtil {
         return algorithm;
     }
 
-    private int getTokenLifetime_in_milliseconds(int minutes) {
+    private int getTokenLifetime_in_milliseconds(final int minutes) {
         return minutes * 60 * 1000; // mins * seconds per min * milliseconds
     }
 
@@ -47,7 +47,7 @@ public class TokenUtil {
         return getTokenLifetime_in_milliseconds(REFRESH_TOKEN_LIFETIME_MINS);
     }
 
-    private String getAccessToken(String username, String issuer, Algorithm algorithm, List<?> roles) {
+    private String getAccessToken(final String username, final String issuer, final Algorithm algorithm, final List<?> roles) {
         Date expiretime = new Date(System.currentTimeMillis() + getAccessTokenLifetime_in_milliseconds());
         DateFormat df = new SimpleDateFormat(dateFormat);
 
@@ -63,7 +63,7 @@ public class TokenUtil {
         return accessToken;
     }
 
-    public String generateAccesToken(User user, String issuer) {
+    public String generateAccesToken(final User user, final String issuer) {
 
         Algorithm algorithm = generateAlgorithm();
 
@@ -72,7 +72,7 @@ public class TokenUtil {
         return access_token;
     }
 
-    public String generateRefreshToken(User user, String issuer) {
+    public String generateRefreshToken(final User user, final String issuer) {
         Algorithm algorithm = generateAlgorithm();
         Date expiretime = new Date(System.currentTimeMillis() + getRefreshTokenLifetime_in_milliseconds());
         String refresh_token = JWT.create()
@@ -87,7 +87,7 @@ public class TokenUtil {
         return refresh_token;
     }
 
-    public String refreshToken(String refresh_token, String issuer, UserService userService) {
+    public String refreshToken(final String refresh_token, final String issuer, final UserService userService) {
 
         Algorithm algorithm = generateAlgorithm();
         JWTVerifier verifier = JWT.require(algorithm).build();
@@ -100,7 +100,7 @@ public class TokenUtil {
         return access_token;
     }
 
-    public UsernamePasswordAuthenticationToken checkAuthentication(String token) {
+    public UsernamePasswordAuthenticationToken checkAuthentication(final String token) {
         Algorithm algorithm = generateAlgorithm();
 
         JWTVerifier verifier = JWT.require(algorithm).build();

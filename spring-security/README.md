@@ -13,3 +13,6 @@ https://stackoverflow.com/questions/71348952/spring-security-without-the-websecu
 
 
 Decode jwt token: https://jwt.io/ 
+
+
+Spring JPA https://www.youtube.com/watch?v=8SGI_XS5OPw

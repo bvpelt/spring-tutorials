@@ -29,13 +29,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User saveUser(User user) {
+    public User saveUser(final User user) {
         log.info("Saving new user {} to the database", user.getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
     }
 
-    public User updateUser(Long id, User user) {
+    public User updateUser(final Long id, final User user) {
         User savedUser = userRepo.findById(id)
                 .orElseThrow(() -> new IllegalStateException("user with id " + id + " does not exist"));
 
@@ -50,22 +50,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Role saveRole(Role role) {
+    public Role saveRole(final Role role) {
         log.info("Saving new role {} to the database", role.getName());
         return roleRepo.save(role);
     }
 
     @Override
-    public void addRoleToUser(String username, String rolename) {
+    public void addRoleToUser(final String username, final String rolename) {
         log.info("Adding role {} to user {}", rolename, username);
         User user = userRepo.findByUsername(username);
         Role role = roleRepo.findByName(rolename);
 
-        user.getRoles().add(role);
+        if (role == null) {
+            log.info("Role {} not found", rolename);
+        } else {
+            user.getRoles().add(role);
+        }
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(final String username) {
         log.info("Fetching user {}", username);
         return userRepo.findByUsername(username);
     }
@@ -82,12 +86,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Role getRole(String rolename) {
+    public Role getRole(final String rolename) {
         return roleRepo.findByName(rolename);
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(final Long id) {
         Optional<User> user = userRepo.findById(id);
 
         if (user.isPresent()) {
@@ -98,12 +102,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void deleteUserById(Long id) {
+    public void deleteUserById(final Long id) {
         userRepo.deleteById(id);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
 
         if (user == null) {

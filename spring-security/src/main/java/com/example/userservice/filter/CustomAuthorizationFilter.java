@@ -27,7 +27,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     private TokenUtil tokenUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
 
         if (request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/token/refresh")) {
             log.info("No action for path /api/login");

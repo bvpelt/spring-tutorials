@@ -38,7 +38,7 @@ public class UserResource {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getUserById(@PathVariable("id") final Long id) {
         User user = userService.getUserById(id);
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -48,18 +48,18 @@ public class UserResource {
     }
 
     @DeleteMapping("/users/{id}")
-    public void deleteUserById(@PathVariable("id") Long id) {
+    public void deleteUserById(@PathVariable("id") final Long id) {
         userService.deleteUserById(id);
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
+    public ResponseEntity<User> saveUser(@RequestBody final User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody(required = true) User user) {
+    public ResponseEntity<?> updateUser(@PathVariable("id") final Long id, @RequestBody(required = true) final User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users").toUriString());
         return ResponseEntity.created(uri).body(userService.updateUser(id, user));
     }
@@ -71,22 +71,46 @@ public class UserResource {
 
 
     @PostMapping("/roles")
-    public ResponseEntity<Role> saveRole(@RequestBody Role role) {
+    public ResponseEntity<Role> saveRole(@RequestBody final Role role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/roles").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
 
+    private boolean userHasRole(final User currentUser, final String roleName) {
+        boolean found = false;
+
+
+        for (Role currentRole: currentUser.getRoles()) {
+            if (!found) {
+                found = currentRole.getName().equals(roleName);
+            }
+        }
+
+        return found;
+    }
     @PostMapping("/roles/addtouser")
-    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form) {
+    public ResponseEntity<?> addRoleToUser(@RequestBody final RoleToUserForm form) {
+        User currentUser = userService.getUser(form.getUsername());
+
+        if (currentUser == null) {
+            throw new IllegalStateException("user " + form.getUsername() + " not known");
+        }
+
         form.getRolenames().forEach(
-                roleName -> userService.addRoleToUser(form.getUsername(), roleName)
+                roleName -> {
+                    if (!userHasRole(currentUser, roleName)) {
+                        userService.addRoleToUser(form.getUsername(), roleName);
+                    } else {
+                        log.info("user: {} already has role: {}", form.getUsername(), roleName);
+                    }
+                }
         );
         //userService.addRoleToUser(form.getUsername(), form.getRolename());
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/token/refresh")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void refreshToken(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {

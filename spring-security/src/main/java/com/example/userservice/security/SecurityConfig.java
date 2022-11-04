@@ -32,12 +32,12 @@ public class SecurityConfig {
     private final AuthenticationConfiguration configuration;
 
     @Autowired
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
 
         AbstractAuthenticationProcessingFilter filter = new CustomAuthenticationFilter(authenticationManager(configuration));
         filter.setFilterProcessesUrl("/api/login");
@@ -58,7 +58,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
