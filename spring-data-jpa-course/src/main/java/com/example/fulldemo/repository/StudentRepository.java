@@ -39,14 +39,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      */
 
     @Query(
-            value = "SELECT * from tbl_student s where s.email_address = ?1",
+            value = "SELECT * from student s where s.email_address = ?1",
             nativeQuery = true
     )
     Student getStudentByEmailAddressNative(String emailId);
 
 
     @Query(
-            value = "SELECT * from tbl_student s where s.email_address = :emailId",
+            value = "SELECT * from student s where s.email_address = :emailId",
             nativeQuery = true
     )
     Student getStudentByEmailAddressNativeNamedParam(@Param("emailId") String emailId);
@@ -57,7 +57,7 @@ Update data
     @Modifying
     @Transactional
     @Query(
-            value = "update tbl_student set first_name = ?1 where email_address = ?2",
+            value = "update student set first_name = ?1 where email_address = ?2",
             nativeQuery = true
     )
     int updateStudentNameByEmailId(String firstName, String emailId);

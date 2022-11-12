@@ -16,7 +16,7 @@ A student follows many courses
 @Builder
 @Entity
 @Table(
-        name = "tbl_student",
+        name = "student",
         uniqueConstraints = @UniqueConstraint(
                 name = "emailid_unique",
                 columnNames = "email_address"
@@ -35,11 +35,20 @@ public class Student {
             generator = "student_sequence"
     )
     private Long studentId;
+
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String firstName;
+
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String lastName;
 
     @Column(
             name = "email_address",
+            columnDefinition = "TEXT",
             nullable = false)
     private String emailId;
 

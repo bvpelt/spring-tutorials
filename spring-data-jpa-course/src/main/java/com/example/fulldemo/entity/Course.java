@@ -32,11 +32,15 @@ public class Course {
             generator = "course_sequence"
     )
     private Long courseId;
+
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String title;
     private Integer credit;
 
     @OneToOne(                             // Implementating bi-directoral relation
-            mappedBy = "course"            // Using course from coursematerial for the relation
+            mappedBy = "course"          // Using course from coursematerial for the relation
     )
     private CourseMaterial courseMaterial;
 
@@ -45,7 +49,10 @@ public class Course {
     )
     @JoinColumn(
             name = "teacher_id",
-            referencedColumnName = "teacherId"
+            referencedColumnName = "teacherId",
+            foreignKey = @ForeignKey(
+                    name = "course_teacher_id_fk"
+            )
     )
     private Teacher teacher;
 
@@ -57,11 +64,17 @@ public class Course {
             name = "student_course_map",                  // A new database table is needed to have course_id and student_id columns
             joinColumns = @JoinColumn(
                     name = "course_id",
-                    referencedColumnName = "courseId"
+                    referencedColumnName = "courseId",
+                    foreignKey = @ForeignKey(
+                            name = "student_course_course_id_fk"
+                    )
             ),
             inverseJoinColumns = @JoinColumn(
                     name = "student_id",
-                    referencedColumnName = "studentId"
+                    referencedColumnName = "studentId",
+                    foreignKey = @ForeignKey(
+                            name = "student_course_student_id_fk"
+                    )
             )
     )
     private List<Student> students;

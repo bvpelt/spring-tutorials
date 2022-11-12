@@ -29,7 +29,14 @@ public class Teacher {
     )
     private Long teacherId;
 
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String firstName;
+
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String lastName;
 
     /*

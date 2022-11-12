@@ -36,7 +36,18 @@ import javax.persistence.Embeddable;
 })
 public class Guardian {
 
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String name;
+
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String email;
+
+    @Column(
+            columnDefinition = "TEXT"
+    )
     private String mobile;
 }
