@@ -7,13 +7,15 @@ import com.example.fulldemo.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
-@SpringBootTest(classes = Application.class )
+@SpringBootTest(classes = Application.class)
 //@DataJpaTest()
 @Slf4j
 class StudentRepositoryTest {
@@ -27,12 +29,13 @@ class StudentRepositoryTest {
                 .emailId("xx@gmail.com")
                 .firstName("xx")
                 .lastName("xxxx")
-               // .guardianName("zzzz")
-               // .guardianEmail("zzzz@gmail.com")
-               // .guardianMobile("999933333")
+                // .guardianName("zzzz")
+                // .guardianEmail("zzzz@gmail.com")
+                // .guardianMobile("999933333")
                 .build();
 
-        studentRepository.save(student);
+        Student savedStudent = studentRepository.save(student);
+        Assert.notNull(savedStudent, "Student not saved");
 
     }
 
@@ -42,14 +45,15 @@ class StudentRepositoryTest {
                 .emailId("xy@gmail.com")
                 .firstName("xx")
                 .lastName("xxxx")
-               // .guardianName("zzzz")
-              //  .guardianEmail("zzzz@gmail.com")
-              //  .guardianMobile("999933333")
+                // .guardianName("zzzz")
+                //  .guardianEmail("zzzz@gmail.com")
+                //  .guardianMobile("999933333")
                 .build();
 
         studentRepository.save(student);
 
         List<Student> studentList = studentRepository.findAll();
+        Assert.isTrue(studentList.size() > 0, "No students found at least one expected");
 
         studentList.forEach(currentStudent -> {
             log.info("Student: {}", currentStudent);
@@ -74,6 +78,7 @@ class StudentRepositoryTest {
         studentRepository.save(student);
 
         List<Student> studentList = studentRepository.findAll();
+        Assert.isTrue(studentList.size() > 0, "No students found at least one expected");
 
         studentList.forEach(currentStudent -> {
             log.info("Student: {}", currentStudent);
@@ -95,7 +100,7 @@ class StudentRepositoryTest {
                 .build();
 
         Student email = studentRepository.findByEmailId("xxx1@gmail.com");
-        if (email != null) {
+        if (email == null) {
             studentRepository.save(student);
         }
 
@@ -113,7 +118,7 @@ class StudentRepositoryTest {
                 .build();
 
         email = studentRepository.findByEmailId("bbbb@gmail.com");
-        if (email != null) {
+        if (email == null) {
             studentRepository.save(student);
         }
 
@@ -131,7 +136,7 @@ class StudentRepositoryTest {
                 .build();
 
         email = studentRepository.findByEmailId("bddb@gmail.com");
-        if (email != null) {
+        if (email == null) {
             studentRepository.save(student);
         }
 
@@ -145,6 +150,7 @@ class StudentRepositoryTest {
 
         log.info("Search student with firstname aaaa - expect not found");
         List<Student> studentList = studentRepository.findByFirstName("aaaa");
+        Assert.isTrue(studentList.size() == 0, "Students found, none expected");
 
         if (studentList.isEmpty()) {
             log.info("No students found");
@@ -156,6 +162,7 @@ class StudentRepositoryTest {
 
         log.info("Search student with firstname bbbb - expect found");
         studentList = studentRepository.findByFirstName("bbbb");
+        Assert.isTrue(studentList.size() > 0, "No students found at least one expected");
 
         if (studentList.isEmpty()) {
             log.info("No students found");
@@ -173,6 +180,7 @@ class StudentRepositoryTest {
 
         log.info("Search student with firstname containing cc - expect not found");
         List<Student> studentList = studentRepository.findByFirstNameContaining("cc");
+        Assert.isTrue(studentList.size() == 0, "Students found, none expected");
 
         if (studentList.isEmpty()) {
             log.info("No students found");
@@ -184,6 +192,7 @@ class StudentRepositoryTest {
 
         log.info("Search student with firstname containing dd - expect found");
         studentList = studentRepository.findByFirstNameContaining("dd");
+        Assert.isTrue(studentList.size() > 0, "No students found at least one expected");
 
         if (studentList.isEmpty()) {
             log.info("No students found");
@@ -201,6 +210,7 @@ class StudentRepositoryTest {
 
         log.info("Search student with guardianname bbbb - expect not found");
         List<Student> studentList = studentRepository.findByGuardianName("bbbb");
+        Assert.isTrue(studentList.size() == 0, "Students found, none expected");
 
         if (studentList.isEmpty()) {
             log.info("No students found");
@@ -212,6 +222,7 @@ class StudentRepositoryTest {
 
         log.info("Search student with guardianname aaaa - expect found");
         studentList = studentRepository.findByGuardianName("aaaa");
+        Assert.isTrue(studentList.size() > 0, "No students found, at least one expected");
 
         if (studentList.isEmpty()) {
             log.info("No students found");
@@ -227,24 +238,9 @@ class StudentRepositoryTest {
 
         fillData();
 
-        List<Student> studentList = studentRepository.findAll();
-
-        studentList.forEach(currentStudent -> {
-            log.info("Student: {}", currentStudent);
-        });
-
-        log.info("Search student with guardianname xxx2@gmail.com - expect not found");
+        log.info("Search student with emailid xxx2@gmail.com - expect not found");
         Student student = studentRepository.getStudentByEmailAddress("xxx2@gmail.com");
-
-        if (student == null) {
-            log.info("No students found");
-        } else {
-                log.info("Student: {}", student);
-        }
-
-        log.info("Search student with guardianname xxx1@gmail.com - expect  found");
-        student = studentRepository.getStudentByEmailAddress("xxx1@gmail.com");
-
+        Assert.isNull(student, "Student found, none expected");
 
         if (student == null) {
             log.info("No students found");
@@ -252,5 +248,104 @@ class StudentRepositoryTest {
             log.info("Student: {}", student);
         }
 
+        log.info("Search student with emailid xxx1@gmail.com - expect  found");
+        student = studentRepository.getStudentByEmailAddress("xxx1@gmail.com");
+        Assert.notNull(student, "Student not found, at leas one expected");
+
+        if (student == null) {
+            log.info("No students found");
+        } else {
+            log.info("Student: {}", student);
+        }
+    }
+
+    @Test
+    public void printGetStudentFirstNameByEmailAddress() {
+
+        fillData();
+
+        log.info("Search firstName with emailid xxx2@gmail.com - expect not found");
+        String firstName = studentRepository.getStudentFirstNameByEmailAddress("xxx2@gmail.com");
+        Assert.isNull(firstName, "Student found, none expected");
+
+        if (firstName == null) {
+            log.info("No students found");
+        } else {
+            log.info("firstName: {}", firstName);
+        }
+
+        log.info("Search student with guardianname xxx1@gmail.com - expect  found");
+        firstName = studentRepository.getStudentFirstNameByEmailAddress("xxx1@gmail.com");
+        Assert.notNull(firstName, "Student not found, at leas one expected");
+
+        if (firstName == null) {
+            log.info("No firstName found");
+        } else {
+            log.info("firstName: {}", firstName);
+        }
+    }
+
+    @Test
+    public void printGetStudentByEmailAddressNative() {
+
+        fillData();
+
+        log.info("Search student with emailid xxx2@gmail.com - expect not found");
+        Student student = studentRepository.getStudentByEmailAddressNative("xxx2@gmail.com");
+        Assert.isNull(student, "Student found, none expected");
+
+        if (student == null) {
+            log.info("No students found");
+        } else {
+            log.info("Student: {}", student);
+        }
+
+        log.info("Search student with emailid xxx1@gmail.com - expect  found");
+        student = studentRepository.getStudentByEmailAddressNative("xxx1@gmail.com");
+        Assert.notNull(student, "Student not found, at leas one expected");
+
+        if (student == null) {
+            log.info("No students found");
+        } else {
+            log.info("Student: {}", student);
+        }
+    }
+
+    @Test
+    public void printGetStudentByEmailAddressNativeNamedParam() {
+
+        fillData();
+
+        log.info("Search student with emailid xxx2@gmail.com - expect not found");
+        Student student = studentRepository.getStudentByEmailAddressNativeNamedParam("xxx2@gmail.com");
+        Assert.isNull(student, "Student found, none expected");
+
+        if (student == null) {
+            log.info("No students found");
+        } else {
+            log.info("Student: {}", student);
+        }
+
+        log.info("Search student with emailid xxx1@gmail.com - expect  found");
+        student = studentRepository.getStudentByEmailAddressNativeNamedParam("xxx1@gmail.com");
+        Assert.notNull(student, "Student not found, at leas one expected");
+
+        if (student == null) {
+            log.info("No students found");
+        } else {
+            log.info("Student: {}", student);
+        }
+    }
+
+    @Test
+    public void updateStudentNameByEmailId() {
+        fillData();
+
+        String emailId = "xxx1@gmail.com";
+        Student student = studentRepository.getStudentByEmailAddressNativeNamedParam(emailId);
+        log.info("firstname of student with email {} is {}", emailId, student.getFirstName());
+        studentRepository.updateStudentNameByEmailId("newname", emailId);
+        Student newstudent = studentRepository.getStudentByEmailAddressNativeNamedParam(emailId);
+        log.info("firstname of student with email {} is {}", emailId, newstudent.getFirstName());
     }
 }
