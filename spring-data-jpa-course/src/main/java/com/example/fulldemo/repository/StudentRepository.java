@@ -39,7 +39,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
      */
 
     @Query(
-        value = "SELECT * from tbl_student s where s.email_address = ?1",
+            value = "SELECT * from tbl_student s where s.email_address = ?1",
             nativeQuery = true
     )
     Student getStudentByEmailAddressNative(String emailId);

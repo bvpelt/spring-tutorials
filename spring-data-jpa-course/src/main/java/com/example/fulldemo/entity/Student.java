@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/*
+A student follows many courses
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,8 +18,8 @@ import javax.persistence.*;
 @Table(
         name = "tbl_student",
         uniqueConstraints = @UniqueConstraint(
-            name = "emailid_unique",
-            columnNames = "email_address"
+                name = "emailid_unique",
+                columnNames = "email_address"
         )
 )
 public class Student {
@@ -36,10 +39,12 @@ public class Student {
     private String lastName;
 
     @Column(
-        name = "email_address",
-        nullable = false)
+            name = "email_address",
+            nullable = false)
     private String emailId;
 
     @Embedded
     private Guardian guardian;
+
+
 }

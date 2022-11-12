@@ -1,4 +1,4 @@
-package com.example.fulldemo.repositorytest;
+package com.example.fulldemo.repository;
 
 import com.example.fulldemo.Application;
 import com.example.fulldemo.entity.Guardian;
@@ -25,32 +25,40 @@ class StudentRepositoryTest {
 
     @Test
     public void saveStudent() {
-        Student student = Student.builder()
-                .emailId("xx@gmail.com")
-                .firstName("xx")
-                .lastName("xxxx")
-                // .guardianName("zzzz")
-                // .guardianEmail("zzzz@gmail.com")
-                // .guardianMobile("999933333")
-                .build();
+        Student student = studentRepository.findByEmailId("xx@gmail.com");
+
+        if (student == null) {
+            student = Student.builder()
+                    .emailId("xx@gmail.com")
+                    .firstName("xx")
+                    .lastName("xxxx")
+                    // .guardianName("zzzz")
+                    // .guardianEmail("zzzz@gmail.com")
+                    // .guardianMobile("999933333")
+                    .build();
 
         Student savedStudent = studentRepository.save(student);
         Assert.notNull(savedStudent, "Student not saved");
+        }
 
     }
 
     @Test
     public void printAllStudents() {
-        Student student = Student.builder()
-                .emailId("xy@gmail.com")
-                .firstName("xx")
-                .lastName("xxxx")
-                // .guardianName("zzzz")
-                //  .guardianEmail("zzzz@gmail.com")
-                //  .guardianMobile("999933333")
-                .build();
+        Student student = studentRepository.findByEmailId("xy@gmail.com");
 
-        studentRepository.save(student);
+        if (student == null) {
+            student = Student.builder()
+                    .emailId("xy@gmail.com")
+                    .firstName("xx")
+                    .lastName("xxxx")
+                    // .guardianName("zzzz")
+                    //  .guardianEmail("zzzz@gmail.com")
+                    //  .guardianMobile("999933333")
+                    .build();
+
+            studentRepository.save(student);
+        }
 
         List<Student> studentList = studentRepository.findAll();
         Assert.isTrue(studentList.size() > 0, "No students found at least one expected");
@@ -68,15 +76,17 @@ class StudentRepositoryTest {
                 .mobile("999933333")
                 .build();
 
-        Student student = Student.builder()
-                .firstName("xxxx")
-                .emailId("xxxx@gmail.com")
-                .lastName("zzzz")
-                .guardian(guardian)
-                .build();
+        Student student = studentRepository.findByEmailId("xxxx@gmail.com");
+        if (student == null) {
+            student = Student.builder()
+                    .firstName("xxxx")
+                    .emailId("xxxx@gmail.com")
+                    .lastName("zzzz")
+                    .guardian(guardian)
+                    .build();
 
-        studentRepository.save(student);
-
+            studentRepository.save(student);
+        }
         List<Student> studentList = studentRepository.findAll();
         Assert.isTrue(studentList.size() > 0, "No students found at least one expected");
 

@@ -6,7 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/*
+A course has only one type coursematerial
+A course only has 1 teacher
+A couse has many students
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,5 +35,41 @@ public class Course {
     private String title;
     private Integer credit;
 
+    @OneToOne(                             // Implementating bi-directoral relation
+            mappedBy = "course"            // Using course from coursematerial for the relation
+    )
+    private CourseMaterial courseMaterial;
 
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "teacher_id",
+            referencedColumnName = "teacherId"
+    )
+    private Teacher teacher;
+
+    @ManyToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "student_course_map",                  // A new database table is needed to have course_id and student_id columns
+            joinColumns = @JoinColumn(
+                    name = "course_id",
+                    referencedColumnName = "courseId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "student_id",
+                    referencedColumnName = "studentId"
+            )
+    )
+    private List<Student> students;
+
+    public void addStudents(Student student) {
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+        students.add(student);
+    }
 }
