@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="-180.0" y="-113.0">com.example.fulldemo.entity.Teacher</node>
+    <node x="51.5" y="824.0">com.example.fulldemo.entity.Course</node>
+    <node x="359.5" y="970.0">com.example.fulldemo.entity.Course.CourseBuilder</node>
+    <node x="446.0" y="359.0">com.example.fulldemo.entity.CourseMaterial.CourseMaterialBuilder</node>
+    <node x="196.0" y="285.0">com.example.fulldemo.entity.CourseMaterial</node>
+    <node x="-64.0" y="626.0">com.example.fulldemo.entity.Student.StudentBuilder</node>
+    <node x="111.5" y="86.0">com.example.fulldemo.entity.Guardian</node>
+    <node x="159.0" y="504.0">com.example.fulldemo.entity.Student</node>
+    <node x="31.0" y="-39.0">com.example.fulldemo.entity.Teacher.TeacherBuilder</node>
+    <node x="300.5" y="160.0">com.example.fulldemo.entity.Guardian.GuardianBuilder</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.example.fulldemo.entity.Guardian.GuardianBuilder" target="com.example.fulldemo.entity.Guardian" relationship="INNER_CLASS">
+      <point x="-91.5" y="-0.0" />
+      <point x="69.5" y="-0.0" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.Teacher.TeacherBuilder" target="com.example.fulldemo.entity.Teacher" relationship="INNER_CLASS">
+      <point x="-88.0" y="-0.0" />
+      <point x="80.5" y="-0.0" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.CourseMaterial.CourseMaterialBuilder" target="com.example.fulldemo.entity.CourseMaterial" relationship="INNER_CLASS">
+      <point x="-118.0" y="-0.0" />
+      <point x="100.0" y="-0.0" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.Course.CourseBuilder" target="com.example.fulldemo.entity.Course" relationship="INNER_CLASS">
+      <point x="-83.0" y="-0.0" />
+      <point x="129.0" y="-0.0" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.CourseMaterial" target="com.example.fulldemo.entity.Course" relationship="TO_ONE">
+      <point x="-50.0" y="89.5" />
+      <point x="246.0" y="484.0" />
+      <point x="-79.0" y="484.0" />
+      <point x="-79.0" y="809.0" />
+      <point x="116.0" y="809.0" />
+      <point x="-64.5" y="-161.5" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.Course" target="com.example.fulldemo.entity.CourseMaterial" relationship="TO_ONE">
+      <point x="64.5" y="-161.5" />
+      <point x="245.0" y="789.0" />
+      <point x="346.0" y="789.0" />
+      <point x="50.0" y="89.5" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.Course" target="com.example.fulldemo.entity.Student" relationship="TO_MANY">
+      <point x="64.5" y="-161.5" />
+      <point x="0.0" y="137.5" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.Student.StudentBuilder" target="com.example.fulldemo.entity.Student" relationship="INNER_CLASS">
+      <point x="86.5" y="-0.0" />
+      <point x="-86.0" y="-0.0" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.Student" target="com.example.fulldemo.entity.Guardian" relationship="TO_ONE">
+      <point x="0.0" y="-137.5" />
+      <point x="245.0" y="494.0" />
+      <point x="181.0" y="494.0" />
+      <point x="0.0" y="89.5" />
+    </edge>
+    <edge source="com.example.fulldemo.entity.Course" target="com.example.fulldemo.entity.Teacher" relationship="TO_ONE">
+      <point x="64.5" y="-161.5" />
+      <point x="245.0" y="789.0" />
+      <point x="-99.5" y="789.0" />
+      <point x="0.0" y="89.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.5" showDependencies="true" x="260.99999999999994" y="527.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
