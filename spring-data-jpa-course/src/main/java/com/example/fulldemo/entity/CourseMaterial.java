@@ -13,9 +13,15 @@ Coursematerial can only be used for one course
 @Builder
 @Entity
 @ToString(exclude = "course")                     // Needed for fetchtype.lazy on course
-@Table (
-        name = "course_material"
-)
+//@Table (
+//        name = "course_material",
+//        uniqueConstraints = {
+//                @UniqueConstraint(
+//                        name = "coursematerial_course_id_fk",
+//                        columnNames = "course_id"
+//                )
+//        }
+//)
 public class CourseMaterial {
 
     @Id
@@ -40,7 +46,6 @@ public class CourseMaterial {
             fetch = FetchType.LAZY,               // Do not fetch related courses unless explicit instructed
             optional = false                      // By default optional is true meaning, a course can not exist without coursematerial
     )
-
     @JoinColumn(                                  // Relation to course first defined as uni-directional coursematerial -> course
             name = "course_id",                   // Add course_id to table course_material
             referencedColumnName = "courseId",   // Use course.courseId in this field
