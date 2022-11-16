@@ -44,11 +44,12 @@ public class CourseMaterialRepositoryTest {
 
     @Test
     public void SaveCourseMaterial() {
-
+        log.info("Start test: SaveCourseMaterial");
         fillCourseMaterial();
 
         List<CourseMaterial> courseMaterialList = repository.findAll();
         Assert.isTrue(courseMaterialList.size() > 0, "No coursematerial found");
         showAllCourseMaterial(courseMaterialList);
+        log.info("End   test: SaveCourseMaterial");
     }
 }

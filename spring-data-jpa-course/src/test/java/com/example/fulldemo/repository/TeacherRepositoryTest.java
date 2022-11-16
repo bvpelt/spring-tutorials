@@ -60,6 +60,7 @@ class TeacherRepositoryTest {
 
     @Test
     public void saveTeacher() {
+        log.info("Start test: saveTeacher");
         fillTeacher();
 
         List<Teacher> teachers = teacherRepository.findAll();
@@ -68,12 +69,13 @@ class TeacherRepositoryTest {
         teachers.forEach(teacher -> {
             log.info("Teacher: {}", teacher);
         });
-
+        log.info("End   test: saveTeacher");
     }
 
 
     @Test
     public void saveCourseWithTeacher() {
+        log.info("Start test: saveCourseWithTeacher");
         fillCourse();
 
         List<Course> courses = courseRepository.findAll();
@@ -82,6 +84,6 @@ class TeacherRepositoryTest {
         courses.forEach(course -> {
             log.info("Course: {}", course);
         });
-
+        log.info("End   test: saveCourseWithTeacher");
     }
 }

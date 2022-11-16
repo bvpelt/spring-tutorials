@@ -39,7 +39,7 @@ public class Course {
     private String title;
     private Integer credit;
 
-    @OneToOne(                             // Implementating bi-directoral relation
+    @OneToOne(                           // Implementating bi-directoral relation
             mappedBy = "course"          // Using course from coursematerial for the relation
     )
     private CourseMaterial courseMaterial;

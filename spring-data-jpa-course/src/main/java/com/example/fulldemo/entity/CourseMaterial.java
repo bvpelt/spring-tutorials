@@ -13,15 +13,15 @@ Coursematerial can only be used for one course
 @Builder
 @Entity
 @ToString(exclude = "course")                     // Needed for fetchtype.lazy on course
-//@Table (
-//        name = "course_material",
-//        uniqueConstraints = {
-//                @UniqueConstraint(
-//                        name = "coursematerial_course_id_fk",
-//                        columnNames = "course_id"
-//                )
-//        }
-//)
+@Table (
+        name = "course_material",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "coursematerial_course_id_unique",
+                        columnNames = "course_id"
+                )
+        }
+)
 public class CourseMaterial {
 
     @Id

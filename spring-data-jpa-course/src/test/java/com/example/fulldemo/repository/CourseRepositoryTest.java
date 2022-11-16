@@ -48,6 +48,8 @@ public class CourseRepositoryTest {
 
     @Test
     public void printCourses() {
+        log.info("Start test: printCourses");
+
         fillCourses();
 
         List<Course> courses = courseRepository.findAll();
@@ -56,11 +58,13 @@ public class CourseRepositoryTest {
         courses.forEach(course -> {
             log.info("Found course: {}", course);
         });
+        log.info("End   test: printCourses");
     }
 
 
     @Test
     public void findAllPagination() {
+        log.info("Start test: findAllPagination");
         Pageable firstPagewithThreeRecords = PageRequest.of(0, 3);
         Pageable secondPagewithTwoRecords = PageRequest.of(1,2);
 
@@ -81,11 +85,13 @@ public class CourseRepositoryTest {
         courses.forEach(course -> {
             log.info("Found course: {}", course);
         });
+        log.info("End   test: findAllPagination");
     }
 
 
     @Test
     public void findAllSorting() {
+        log.info("Start test: findAllSorting");
         Pageable sortByTitle = PageRequest.of(
                 0,
                 5,
@@ -126,10 +132,12 @@ public class CourseRepositoryTest {
         courses.forEach(course -> {
             log.info("Found course: {}", course);
         });
+        log.info("End   test: findAllSorting");
     }
 
     @Test
     public void printfindByTitleContaining() {
+        log.info("Start test: printfindByTitleContaining");
         Pageable firstPageTenRecoreds = PageRequest.of(0,10);
 
         List<Course> courses = courseRepository.findByTitleContaining("D",
@@ -138,13 +146,14 @@ public class CourseRepositoryTest {
         courses.forEach(course -> {
             log.info("Found course: {}", course);
         });
+        log.info("End   test: printfindByTitleContaining");
     }
 
 
     @Test
     @Transactional
     public void saveCourseWithStudentAndTeacher() {
-
+        log.info("Start test: saveCourseWithStudentAndTeacher");
         Teacher teacher = Teacher.builder()
                 .firstName("Lizzy")
                 .lastName("Morgan")
@@ -168,5 +177,6 @@ public class CourseRepositoryTest {
         course.addStudents(student);
 
         courseRepository.save(course);
+        log.info("End   test: saveCourseWithStudentAndTeacher");
     }
 }

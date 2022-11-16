@@ -25,6 +25,7 @@ class StudentRepositoryTest {
 
     @Test
     public void saveStudent() {
+        log.info("Start test: saveStudent");
         Student student = studentRepository.findByEmailId("xx@gmail.com");
 
         if (student == null) {
@@ -40,11 +41,12 @@ class StudentRepositoryTest {
         Student savedStudent = studentRepository.save(student);
         Assert.notNull(savedStudent, "Student not saved");
         }
-
+        log.info("End   test: saveStudent");
     }
 
     @Test
     public void printAllStudents() {
+        log.info("Start test: printAllStudents");
         Student student = studentRepository.findByEmailId("xy@gmail.com");
 
         if (student == null) {
@@ -66,10 +68,12 @@ class StudentRepositoryTest {
         studentList.forEach(currentStudent -> {
             log.info("Student: {}", currentStudent);
         });
+        log.info("End   test: printAllStudents");
     }
 
     @Test
     public void saveStudentWithGuardian() {
+        log.info("Start test: saveStudentWithGuardian");
         Guardian guardian = Guardian.builder()
                 .email("zzzz@gmail.com")
                 .name("zzzz")
@@ -93,9 +97,11 @@ class StudentRepositoryTest {
         studentList.forEach(currentStudent -> {
             log.info("Student: {}", currentStudent);
         });
+        log.info("End   test: saveStudentWithGuardian");
     }
 
     private void fillData() {
+
         Guardian guardian = Guardian.builder()
                 .email("zzzz@gmail.com")
                 .name("zzzz")
@@ -155,7 +161,7 @@ class StudentRepositoryTest {
 
     @Test
     public void printStudentByFirstName() {
-
+        log.info("Start test: printStudentByFirstName");
         fillData();
 
         log.info("Search student with firstname aaaa - expect not found");
@@ -181,11 +187,12 @@ class StudentRepositoryTest {
                 log.info("Student: {}", currentStudent);
             });
         }
+        log.info("End   test: printStudentByFirstName");
     }
 
     @Test
     public void printStudentByFirstNameContaining() {
-
+        log.info("Start test: printStudentByFirstNameContaining");
         fillData();
 
         log.info("Search student with firstname containing cc - expect not found");
@@ -211,11 +218,11 @@ class StudentRepositoryTest {
                 log.info("Student: {}", currentStudent);
             });
         }
-    }
+        log.info("End   test: printStudentByFirstNameContaining");    }
 
     @Test
     public void printStudentBasedOnGuardianName() {
-
+        log.info("Start test: printStudentBasedOnGuardianName");
         fillData();
 
         log.info("Search student with guardianname bbbb - expect not found");
@@ -241,11 +248,12 @@ class StudentRepositoryTest {
                 log.info("Student: {}", currentStudent);
             });
         }
+        log.info("End   test: printStudentBasedOnGuardianName");
     }
 
     @Test
     public void printGetStudentByEmailAddress() {
-
+        log.info("Start test: printGetStudentByEmailAddress");
         fillData();
 
         log.info("Search student with emailid xxx2@gmail.com - expect not found");
@@ -267,11 +275,12 @@ class StudentRepositoryTest {
         } else {
             log.info("Student: {}", student);
         }
+        log.info("End   test: printGetStudentByEmailAddress");
     }
 
     @Test
     public void printGetStudentFirstNameByEmailAddress() {
-
+        log.info("Start test: printGetStudentFirstNameByEmailAddress");
         fillData();
 
         log.info("Search firstName with emailid xxx2@gmail.com - expect not found");
@@ -293,11 +302,12 @@ class StudentRepositoryTest {
         } else {
             log.info("firstName: {}", firstName);
         }
+        log.info("End   test: printGetStudentFirstNameByEmailAddress");
     }
 
     @Test
     public void printGetStudentByEmailAddressNative() {
-
+        log.info("Start test: printGetStudentByEmailAddressNative");
         fillData();
 
         log.info("Search student with emailid xxx2@gmail.com - expect not found");
@@ -319,11 +329,12 @@ class StudentRepositoryTest {
         } else {
             log.info("Student: {}", student);
         }
+        log.info("End   test: printGetStudentByEmailAddressNative");
     }
 
     @Test
     public void printGetStudentByEmailAddressNativeNamedParam() {
-
+        log.info("Start test: printGetStudentByEmailAddressNativeNamedParam");
         fillData();
 
         log.info("Search student with emailid xxx2@gmail.com - expect not found");
@@ -345,10 +356,12 @@ class StudentRepositoryTest {
         } else {
             log.info("Student: {}", student);
         }
+        log.info("End   test: printGetStudentByEmailAddressNativeNamedParam");
     }
 
     @Test
     public void updateStudentNameByEmailId() {
+        log.info("Start test: updateStudentNameByEmailId");
         fillData();
 
         String emailId = "xxx1@gmail.com";
@@ -357,5 +370,6 @@ class StudentRepositoryTest {
         studentRepository.updateStudentNameByEmailId("newname", emailId);
         Student newstudent = studentRepository.getStudentByEmailAddressNativeNamedParam(emailId);
         log.info("firstname of student with email {} is {}", emailId, newstudent.getFirstName());
+        log.info("End   test: updateStudentNameByEmailId");
     }
 }
